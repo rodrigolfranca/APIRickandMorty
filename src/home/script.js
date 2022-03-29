@@ -12,7 +12,7 @@ function buscaPor(id) {
     }
 }
 
-async function montaCartões() {    
+async function montaCartões() {
     const personagem = await buscaPor($('#id-personagem').val());
     if (personagem === "") {
         arrayPersonagens.length = 0;
