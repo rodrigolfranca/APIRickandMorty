@@ -1,48 +1,46 @@
 const arrayPersonagens = [];
 
-function buscaPor(por, id) {    
+function buscaPor(id) {    
     if (id === "" || id === '0') {
         $('#container-personagens').html("");
         return ""
-    } else {
-        if (por === "personagem") {
-            return fetch(`https://rickandmortyapi.com/api/character/${id}`)
-                   .then((req) => req.json())
-                   .then(objeto => objeto)
-                   .catch(err => console.log(err));
-        } else if (por === "episode") {
-            return fetch(`${id}`)
-                   .then(data => data.json())
-                   .then(data => data)
-                   .catch(err => console.log(err))
-
-        }
+    } else {        
+        return fetch(`https://rickandmortyapi.com/api/character/${id}`)
+               .then((req) => req.json())
+               .then(objeto => objeto.name)
+               .catch(err => console.log(err));
     }
 }
 
 async function montaCartões() {    
-    const personagem = await buscaPor( "personagem" , $('#id-personagem').val() );
+    const personagem = await buscaPor($('#id-personagem').val());
     if (personagem === "") {
         arrayPersonagens.length = 0;
         $('#adcionado').text(`O deck de personagens foi limpo`)
-        return true;        
-    }    
-    personagem.episode['0'] = await buscaPor("episode", personagem.episode['0']);
-    arrayPersonagens.push(personagem);    
+        return true;
+    }
+    arrayPersonagens.push(personagem);
+    $('#adcionado').text(`${personagem} foi adcionado ao deck de personagens`)
     $('#container-personagens').html("");
-    arrayPersonagens.forEach(element => {        
-        $('#adcionado').text(`${element.name} adcionado ao deck`)
-        $('#container-personagens').append(`
-                                <div class="cartao-personagem">
-                                    <img class="photo" src=${element.image} />
-                                    <h3>${element.name}</h3>
-                                    <span>${element.status} - ${element.species}</span>
-                                    <span class="cartao-label">Last Known Location</span>
-                                    <span>${element.location.name}</span>
-                                    <span class="cartao-label">First seen in:</span>
-                                    <span>${element.episode['0'].name}</span>
-                                </div>                                   
-                                `)
+    arrayPersonagens.forEach(nome => {
+        fetch(`https://rickandmortyapi.com/api/character/?name=${nome}`)
+        .then(data => data.json())
+        .then(filtro => {
+            for (key in filtro.results) {                
+                $('#container-personagens').append(`
+                            <div class="cartao-personagem">
+                                <img class="photo" src=${filtro.results[key].image} />
+                                <h3>${filtro.results[key].name}</h3>
+                                <span>${filtro.results[key].status} - ${filtro.results[key].species}</span>
+                                <span class="cartao-label">Last Known Location</span>
+                                <span>${filtro.results[key].location.name}</span>
+                                <span class="cartao-label">First seen in:</span>
+                                <span>${filtro.results[key].episode['0']}</span>
+                            </div>
+                            `)
+            }
+        })
+        .catch(err => console.log(err));
     });
 }
 
