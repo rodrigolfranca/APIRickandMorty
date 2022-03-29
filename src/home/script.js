@@ -1,10 +1,10 @@
 const arrayPersonagens = [];
 
-function buscaPor(id) {    
+function buscaPor(id) {
     if (id === "" || id === '0') {
         $('#container-personagens').html("");
-        return ""
-    } else {        
+        return "";
+    } else {
         return fetch(`https://rickandmortyapi.com/api/character/${id}`)
                .then((req) => req.json())
                .then(objeto => objeto.name)
@@ -16,17 +16,17 @@ async function montaCartões() {
     const personagem = await buscaPor($('#id-personagem').val());
     if (personagem === "") {
         arrayPersonagens.length = 0;
-        $('#adcionado').text(`O deck de personagens foi limpo`)
+        $('#adcionado').text(`O deck de personagens foi limpo`);
         return true;
     }
     arrayPersonagens.push(personagem);
-    $('#adcionado').text(`${personagem} foi adcionado ao deck de personagens`)
+    $('#adcionado').text(`${personagem} foi adcionado ao deck de personagens`);
     $('#container-personagens').html("");
     arrayPersonagens.forEach(nome => {
         fetch(`https://rickandmortyapi.com/api/character/?name=${nome}`)
         .then(data => data.json())
         .then(filtro => {
-            for (key in filtro.results) {                
+            for (key in filtro.results) {
                 $('#container-personagens').append(`
                             <div class="cartao-personagem">
                                 <img class="photo" src=${filtro.results[key].image} />

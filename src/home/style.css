@@ -9,7 +9,7 @@ body {
     margin: 0;
     background-color: #0e0e0e;
     color: #fefefe;
-    text-align: center;    
+    text-align: center;
 }
 header{
     height: 40px;
@@ -28,7 +28,7 @@ header{
     background-color: #fefefe;
 }
 main {
-    margin: 0 auto;    
+    margin: 0 auto;
     width: 100%;
     height: fit-content;
 }
