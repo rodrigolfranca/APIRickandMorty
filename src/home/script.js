@@ -26,22 +26,21 @@ async function montaCartões() {
         fetch(`https://rickandmortyapi.com/api/character/?name=${nome}`)
         .then(data => data.json())
         .then(filtro => {
-            for (key in filtro.results) {
+            filtro.results.forEach(filtro => {
                 $('#container-personagens').append(`
-                            <div class="cartao-personagem">
-                                <img class="photo" src=${filtro.results[key].image} />
-                                <h3>${filtro.results[key].name}</h3>
-                                <span>${filtro.results[key].status} - ${filtro.results[key].species}</span>
-                                <span class="cartao-label">Last Known Location</span>
-                                <span>${filtro.results[key].location.name}</span>
-                                <span class="cartao-label">First seen in:</span>
-                                <span>${filtro.results[key].episode['0']}</span>
-                            </div>
-                            `)
-            }
-        })
+                    <div class="cartao-personagem">
+                        <img class="photo" src=${filtro.image} />
+                        <h3>${filtro.name}</h3>
+                        <span>${filtro.status} - ${filtro.species}</span>
+                        <span class="cartao-label">Last Known Location</span>
+                        <span>${filtro.location.name}</span>
+                        <span class="cartao-label">First seen in:</span>
+                        <span>${filtro.episode['0']}</span>
+                    </div>
+                `)
+            })
         .catch(err => console.log(err));
-    });
+        });
+    })
 }
-
 $('#btn-go').on('click', montaCartões);
